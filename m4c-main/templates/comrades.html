@@ -1,0 +1,78 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Comrades | Movement for Change</title>
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+    <script src="{% static 'js/site.js' %}" defer></script>
+  </head>
+  <body class="page-shell">
+    <header class="site-header" id="siteHeader">
+      <div class="header-inner page-width">
+        <a class="brand" href="{% url 'home' %}">
+          <img src="{% static 'images/m4c-logo.jpeg' %}" alt="Movement for Change logo" width="48" height="48">
+          <span class="brand-copy"><strong>M4C</strong><small>Peace Movement</small></span>
+        </a>
+        <nav class="primary-nav" id="primaryNav" aria-label="Main navigation">
+          <a href="{% url 'home' %}">Home</a>
+          <a href="{% url 'leadership' %}">Leadership</a>
+          <a href="{% url 'counties' %}">Counties</a>
+          <a href="{% url 'comrades' %}">Comrades</a>
+          {% if user.is_authenticated %}<a href="{% url 'profile' %}">Profile</a>{% else %}<a href="{% url 'login' %}">Sign in</a>{% endif %}
+        </nav>
+        <div class="header-actions">
+          <a class="button button-small button-blue" href="{% url 'home' %}#involve">Join Now</a>
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-controls="primaryNav" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-main page-width section-pad">
+      <section class="page-hero">
+        <p class="eyebrow">Comrades</p>
+        <h1>Campus voices for <em>peace and change</em></h1>
+        <p>The Comrades Section is M4C’s dedicated structure for students and young people in institutions of higher learning.</p>
+      </section>
+
+      <section class="structure-section">
+        <div class="section-heading section-heading-left">
+          <p class="eyebrow">Campus Leadership</p>
+          <h2>Campus Leadership Structure</h2>
+        </div>
+        <ol class="role-list campus-role-list">
+          {% for role in campus_roles %}
+            <li><span>{{ forloop.counter }}</span>{{ role }}</li>
+          {% endfor %}
+        </ol>
+      </section>
+
+      <section class="structure-section">
+        <div class="section-heading section-heading-left">
+          <p class="eyebrow">Campus Directory</p>
+          <h2>Campus Directory</h2>
+        </div>
+        <div class="directory-empty-state">
+          <p>Verified campus names, contacts, and appointed comrades will appear here once the directory is provided.</p>
+        </div>
+      </section>
+
+      <section class="structure-section comrades-focus-grid">
+        <article class="info-card"><p class="eyebrow">Campus Activities</p><h3>Campus Activities</h3><p>Forums, peacebuilding activities, student engagement, and campus events will be listed here.</p></article>
+        <article class="info-card"><p class="eyebrow">Academic &amp; Policy Engagement</p><h3>Academic &amp; Policy Engagement</h3><p>Policy discussions, research engagement, civic learning, and campus-led dialogue.</p></article>
+        <article class="info-card"><p class="eyebrow">Welfare &amp; Inclusion</p><h3>Welfare &amp; Inclusion</h3><p>Inclusive participation and support for students across backgrounds and abilities.</p></article>
+        <article class="info-card"><p class="eyebrow">Mobilization</p><h3>Mobilization</h3><p>Campus teams and class or department ambassadors connect students to local action.</p></article>
+        <article class="info-card"><p class="eyebrow">Class / Department Ambassadors</p><h3>Class / Department Ambassadors</h3><p>Ambassador assignments will be published after institutions and representatives are confirmed.</p></article>
+        <article class="info-card"><p class="eyebrow">Campus Events</p><h3>Campus Events</h3><p>Upcoming dates and locations will be added once confirmed by the Comrades leadership.</p></article>
+      </section>
+
+      <section class="comrades-join">
+        <div><p class="eyebrow">Join Comrades</p><h2>Bring M4C to your campus</h2></div>
+        <a class="button button-blue" href="{% url 'home' %}#involve">Join Comrades <span aria-hidden="true">→</span></a>
+      </section>
+    </main>
+  </body>
+</html>

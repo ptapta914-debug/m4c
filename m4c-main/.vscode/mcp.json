@@ -1,0 +1,19 @@
+{
+  "servers": {
+    "honcho": {
+      "type": "http",
+      "url": "https://mcp.honcho.dev",
+      "headers": {
+        "Authorization": "Bearer ${input:honcho-api-key}"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "id": "honcho-api-key",
+      "type": "promptString",
+      "description": "Honcho API key",
+      "password": true
+    }
+  ]
+}

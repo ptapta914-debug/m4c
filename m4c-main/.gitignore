@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+db.sqlite3
+staticfiles/
+.env
+.env.*
+.DS_Store
+*.pem
+.vscode/*
+!.vscode/mcp.json
+.idea/
+*.swp
+*.swo
+*~
+
+# Auto-generated Django secret key (never commit)
+.django_secret_key

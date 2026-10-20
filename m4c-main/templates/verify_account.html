@@ -1,0 +1,83 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Verify Account | Movement for Change</title>
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  </head>
+  <body class="page-shell login-shell">
+    <main class="login-layout page-width">
+      <section class="login-intro">
+        <a class="brand login-brand" href="{% url 'home' %}">
+          <img src="{% static 'images/m4c-logo.jpeg' %}" alt="Movement for Change logo" width="48" height="48">
+          <span class="brand-copy"><strong>M4C</strong><small>Peace Movement</small></span>
+        </a>
+        <div class="login-intro-copy">
+          <p class="eyebrow">Member account</p>
+          <h1>Verify your <em>contacts</em></h1>
+          <p>You are signed in. Confirm your email and WhatsApp number to complete your profile.</p>
+        </div>
+        <a class="login-home-link" href="{% url 'home' %}">Return to the public site <span aria-hidden="true">&rarr;</span></a>
+      </section>
+
+      <section class="login-panel account-panel" aria-labelledby="verifyHeading">
+        <nav class="account-tabs" aria-label="Account">
+          <a href="{% url 'profile' %}">Profile</a>
+          <a href="{% url 'verify-account' %}" aria-current="page">Verification</a>
+        </nav>
+        <div class="login-panel-heading">
+          <p class="eyebrow">Contact verification</p>
+          <h2 id="verifyHeading">Confirm your details</h2>
+        </div>
+        {% if messages %}
+          <ul class="auth-flashes" aria-live="polite">
+            {% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+
+        <section class="verification-channel" aria-labelledby="emailVerificationHeading">
+          <div class="verification-channel-heading">
+            <div><p class="eyebrow">Email</p><h3 id="emailVerificationHeading">{{ request.user.email }}</h3></div>
+            {% if profile.email_verified %}<span class="verification-state is-verified">Verified</span>{% else %}<span class="verification-state">Pending</span>{% endif %}
+          </div>
+          {% if not profile.email_verified %}
+            <p class="auth-help">We emailed you a 6-digit code and a verification link. Enter the code below, or open the link from your email.</p>
+            <form method="post" class="auth-form verification-form">
+              {% csrf_token %}
+              <input type="hidden" name="channel" value="email">
+              <label class="sr-only" for="emailCode">Email verification code</label>
+              <input id="emailCode" class="verification-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" placeholder="6-digit code" required>
+              <button class="button button-blue auth-submit" type="submit" name="action" value="verify">Verify email</button>
+            </form>
+            <form method="post" class="verification-resend">
+              {% csrf_token %}<input type="hidden" name="channel" value="email">
+              <button type="submit" name="action" value="resend">Send a new email code</button>
+            </form>
+          {% endif %}
+        </section>
+
+        <section class="verification-channel" aria-labelledby="phoneVerificationHeading">
+          <div class="verification-channel-heading">
+            <div><p class="eyebrow">WhatsApp</p><h3 id="phoneVerificationHeading">{{ profile.phone_number }}</h3></div>
+            {% if profile.phone_verified %}<span class="verification-state is-verified">Verified</span>{% else %}<span class="verification-state">Pending</span>{% endif %}
+          </div>
+          {% if not profile.phone_verified %}
+            <form method="post" class="auth-form verification-form">
+              {% csrf_token %}
+              <input type="hidden" name="channel" value="phone">
+              <label class="sr-only" for="phoneCode">Phone verification code</label>
+              <input id="phoneCode" class="verification-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" placeholder="6-digit code" required>
+              <button class="button button-blue auth-submit" type="submit" name="action" value="verify">Verify WhatsApp</button>
+            </form>
+            <form method="post" class="verification-resend">
+              {% csrf_token %}<input type="hidden" name="channel" value="phone">
+              <button type="submit" name="action" value="resend">Send a new WhatsApp code</button>
+            </form>
+          {% endif %}
+        </section>
+      </section>
+    </main>
+  </body>
+</html>

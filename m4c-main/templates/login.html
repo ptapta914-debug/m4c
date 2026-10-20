@@ -1,0 +1,65 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign In | Movement for Change</title>
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  </head>
+  <body class="page-shell login-shell">
+    <main class="login-layout page-width">
+      <section class="login-intro">
+        <a class="brand login-brand" href="{% url 'home' %}">
+          <img src="{% static 'images/m4c-logo.jpeg' %}" alt="Movement for Change logo" width="48" height="48">
+          <span class="brand-copy"><strong>M4C</strong><small>Peace Movement</small></span>
+        </a>
+        <div class="login-intro-copy">
+          <p class="eyebrow">Member access</p>
+          <h1>Welcome back to <em>M4C</em></h1>
+          <p>Sign in to continue your work across the movement.</p>
+        </div>
+        <a class="login-home-link" href="{% url 'home' %}">Return to the public site <span aria-hidden="true">&rarr;</span></a>
+      </section>
+
+      <section class="login-panel" aria-labelledby="loginHeading">
+        <div class="login-panel-heading">
+          <p class="eyebrow">Member account</p>
+          <h2 id="loginHeading">Sign in</h2>
+          <p>Use the username and password associated with your account.</p>
+        </div>
+        {% if messages %}
+          <ul class="auth-flashes" aria-live="polite">
+            {% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+        <form method="post" class="auth-form">
+          {% csrf_token %}
+          {% if form.non_field_errors %}
+            <ul class="auth-errors" role="alert">
+              {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+            </ul>
+          {% endif %}
+          <div class="auth-field">
+            <label for="id_username">Username or email</label>
+            <input id="id_username" name="username" type="text" value="{{ form.username.value|default_if_none:'' }}" autocomplete="username" aria-invalid="{% if form.username.errors %}true{% else %}false{% endif %}" required autofocus>
+            {% if form.username.errors %}
+              <ul class="auth-errors">{% for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+          </div>
+          <div class="auth-field">
+            <label for="id_password">Password</label>
+            <input id="id_password" name="password" type="password" autocomplete="current-password" aria-invalid="{% if form.password.errors %}true{% else %}false{% endif %}" required>
+            {% if form.password.errors %}
+              <ul class="auth-errors">{% for error in form.password.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+          </div>
+          <p class="auth-switch"><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+          <input type="hidden" name="next" value="{{ next }}">
+          <button class="button button-blue auth-submit" type="submit">Sign in</button>
+        </form>
+        <p class="auth-switch">New to M4C? <a href="{% url 'register' %}">Create an account</a></p>
+      </section>
+    </main>
+  </body>
+</html>

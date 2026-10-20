@@ -1,0 +1,51 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Member Profile | Movement for Change</title>
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  </head>
+  <body class="page-shell login-shell">
+    <main class="login-layout page-width">
+      <section class="login-intro">
+        <a class="brand login-brand" href="{% url 'home' %}">
+          <img src="{% static 'images/m4c-logo.jpeg' %}" alt="Movement for Change logo" width="48" height="48">
+          <span class="brand-copy"><strong>M4C</strong><small>Peace Movement</small></span>
+        </a>
+        <div class="login-intro-copy">
+          <p class="eyebrow">Member account</p>
+          <h1>Your <em>profile</em></h1>
+          <p>Check your account details and contact verification status.</p>
+        </div>
+        <a class="login-home-link" href="{% url 'home' %}">Return to the public site <span aria-hidden="true">&rarr;</span></a>
+      </section>
+
+      <section class="login-panel account-panel" aria-labelledby="profileHeading">
+        <nav class="account-tabs" aria-label="Account">
+          <a href="{% url 'profile' %}" aria-current="page">Profile</a>
+          <a href="{% url 'verify-account' %}">Verification</a>
+        </nav>
+        <div class="login-panel-heading">
+          <p class="eyebrow">Member profile</p>
+          <h2 id="profileHeading">{{ profile.full_name|default:request.user.username }}</h2>
+        </div>
+        {% if messages %}
+          <ul class="auth-flashes" aria-live="polite">
+            {% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+        <dl class="profile-details">
+          <div><dt>Username</dt><dd>{{ request.user.username }}</dd></div>
+          <div><dt>Email</dt><dd>{{ request.user.email }}</dd><dd>{% if profile.email_verified %}<span class="verification-state is-verified">Verified</span>{% else %}<span class="verification-state">Pending</span>{% endif %}</dd></div>
+          <div><dt>WhatsApp</dt><dd>{{ profile.phone_number }}</dd><dd>{% if profile.phone_verified %}<span class="verification-state is-verified">Verified</span>{% else %}<span class="verification-state">Pending</span>{% endif %}</dd></div>
+          <div><dt>County</dt><dd>{{ profile.county|default:"Not set" }}</dd></div>
+          <div><dt>Role</dt><dd>{{ profile.interest|default:"Not set" }}</dd></div>
+        </dl>
+        <a class="button button-blue auth-submit" href="{% url 'verify-account' %}">Verify contact details</a>
+        <form method="post" action="{% url 'logout' %}" class="profile-logout">{% csrf_token %}<button class="button button-outline" type="submit">Sign out</button></form>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,93 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>M4C Across Kenya | Movement for Change</title>
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+    <script src="{% static 'js/site.js' %}" defer></script>
+  </head>
+  <body class="page-shell">
+    <header class="site-header" id="siteHeader">
+      <div class="header-inner page-width">
+        <a class="brand" href="{% url 'home' %}">
+          <img src="{% static 'images/m4c-logo.jpeg' %}" alt="Movement for Change logo" width="48" height="48">
+          <span class="brand-copy"><strong>M4C</strong><small>Peace Movement</small></span>
+        </a>
+        <nav class="primary-nav" id="primaryNav" aria-label="Main navigation">
+          <a href="{% url 'home' %}">Home</a>
+          <a href="{% url 'leadership' %}">Leadership</a>
+          <a href="{% url 'counties' %}">Counties</a>
+          <a href="{% url 'comrades' %}">Comrades</a>
+          {% if user.is_authenticated %}<a href="{% url 'profile' %}">Profile</a>{% else %}<a href="{% url 'login' %}">Sign in</a>{% endif %}
+        </nav>
+        <div class="header-actions">
+          <a class="button button-small button-blue" href="{% url 'home' %}#involve">Join Now</a>
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-controls="primaryNav" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-main page-width section-pad">
+      <section class="page-hero">
+        <p class="eyebrow">M4C Across Kenya</p>
+        <h1>County coverage and <em>ward leadership</em></h1>
+        <p>Movement for Change operates across Kenya through local county teams, ward structures, and peace ambassadors committed to community renewal and constructive engagement.</p>
+        <p class="page-callout">Ward leadership is a core part of the county structure, with each county building local teams, sub-county patron networks, and ward-level outreach.</p>
+      </section>
+
+      <section class="structure-section">
+        <div class="section-heading">
+          <p class="eyebrow">Geographic coverage</p>
+          <h2>Kenya county network</h2>
+        </div>
+
+        <div class="map-layout">
+          <div class="map-panel map-panel-map">
+            <div class="map-header">
+              <strong>County map</strong>
+              <span>{{ counties|length }} counties</span>
+            </div>
+            <form class="map-search-form" id="countySearchForm">
+              <label for="countySearch">Find a county</label>
+              <input id="countySearch" type="search" list="countyOptions" placeholder="Type a county name" autocomplete="off">
+              <datalist id="countyOptions">
+                {% for county in counties %}<option value="{{ county.name }}">{% endfor %}
+              </datalist>
+              <button class="button button-blue" type="submit">View county</button>
+              <button class="button button-outline" id="mapBackButton" type="button" hidden>All counties</button>
+            </form>
+            <svg id="countyMap" viewBox="0 0 1000 1000" role="group" aria-label="Interactive map of Kenya counties and wards"></svg>
+          </div>
+          <aside class="map-panel map-panel-info" aria-live="polite">
+            <div class="map-header">
+              <strong>County overview</strong>
+              <span>Ward leadership</span>
+            </div>
+            <h3 id="mapCountyName">Select a county</h3>
+            <p id="mapCountySummary">Click any county on the map to view the local M4C structure, sub-county coverage, and ward leadership model.</p>
+            <ul id="mapCountyWards" class="ward-list"></ul>
+          </aside>
+        </div>
+        <p class="boundary-note">Ward boundaries: geoBoundaries KEN ADM3 (CC BY 4.0, represented 2016). Sub-county matching uses KEN ADM2 (CC BY 3.0 IGO, represented 2020); county outlines use KEN ADM1 reference data (Public Domain). These are reference boundaries, not authoritative legal delimitations. <a href="https://www.geoboundaries.org/">Source and licensing</a>.</p>
+
+        <div class="map-panel">
+          <div class="map-header">
+            <strong>Kenya county footprint</strong>
+            <span>{{ counties|length }} counties</span>
+          </div>
+          <div class="county-map-grid" aria-label="County map grid">
+            {% for county in counties %}
+              <a class="county-map-node" href="{% url 'county-detail' county.slug %}">
+                <span>{{ county.name }}</span>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

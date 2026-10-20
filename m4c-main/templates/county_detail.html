@@ -1,0 +1,82 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ county.name }} | Movement for Change</title>
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+    <script src="{% static 'js/site.js' %}" defer></script>
+  </head>
+  <body class="page-shell">
+    <header class="site-header" id="siteHeader">
+      <div class="header-inner page-width">
+        <a class="brand" href="{% url 'home' %}">
+          <img src="{% static 'images/m4c-logo.jpeg' %}" alt="Movement for Change logo" width="48" height="48">
+          <span class="brand-copy"><strong>M4C</strong><small>Peace Movement</small></span>
+        </a>
+        <nav class="primary-nav" id="primaryNav" aria-label="Main navigation">
+          <a href="{% url 'home' %}">Home</a>
+          <a href="{% url 'leadership' %}">Leadership</a>
+          <a href="{% url 'counties' %}">Counties</a>
+          <a href="{% url 'comrades' %}">Comrades</a>
+          {% if user.is_authenticated %}<a href="{% url 'profile' %}">Profile</a>{% else %}<a href="{% url 'login' %}">Sign in</a>{% endif %}
+        </nav>
+        <div class="header-actions">
+          <a class="button button-small button-blue" href="{% url 'home' %}#involve">Join Now</a>
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-controls="primaryNav" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-main page-width section-pad">
+      <section class="page-hero narrow-hero">
+        <p class="eyebrow">County profile</p>
+        <h1>{{ county.name }}</h1>
+        <p>{{ county.focus }}</p>
+      </section>
+
+      <section class="structure-section">
+        <div class="card-grid">
+          <article class="info-card">
+            <span class="chip">County patron</span>
+            <h3>{{ county.county_patron }}</h3>
+            <p>County patron profile and photograph will be added when verified by M4C.</p>
+          </article>
+          <article class="info-card">
+            <span class="chip accent">Sub-counties</span>
+            <h3>{{ county.subcounties|length }} local areas</h3>
+            <p>Sub-county patron names are pending confirmation.</p>
+          </article>
+          <article class="info-card">
+            <span class="chip">Ward coverage</span>
+            <h3>{{ county.ward_count }} mapped wards</h3>
+            <p>Ward patron names are pending confirmation.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="structure-section">
+        <div class="section-heading section-heading-left">
+          <p class="eyebrow">Local hierarchy</p>
+          <h2>Sub-county and ward leadership</h2>
+        </div>
+        <p class="boundary-note">Mapped boundaries are geographic references, not authoritative legal delimitations. Ward data is geoBoundaries KEN ADM3 (CC BY 4.0, 2016); sub-county relationships are derived from KEN ADM2 (CC BY 3.0 IGO, 2020).</p>
+        <div class="subcounty-grid">
+          {% for subcounty in county.subcounties %}
+            <details class="subcounty-item">
+              <summary><strong>{{ subcounty.name }}</strong><span>{{ subcounty.wards|length }} wards</span></summary>
+              <ul class="ward-directory">
+                {% for ward in subcounty.wards %}
+                  <li><span>{{ ward }}</span><small>Ward Patron to be confirmed</small></li>
+                {% endfor %}
+              </ul>
+            </details>
+          {% endfor %}
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

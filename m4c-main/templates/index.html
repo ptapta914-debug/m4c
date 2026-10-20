@@ -1,0 +1,240 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Promoting peace, unity, and constructive dialogue across Kenya.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Movement for Change">
+    <meta property="og:url" content="https://movementforchange.co.ke/">
+    <meta property="og:title" content="Movement for Change | M4C">
+    <meta property="og:description" content="Promoting peace, unity, and constructive dialogue across Kenya.">
+    <meta property="og:image" content="https://movementforchange.co.ke{% static 'images/m4c-logo.jpeg' %}">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="640">
+    <meta property="og:image:height" content="640">
+    <meta property="og:image:alt" content="Movement for Change (M4C) logo">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Movement for Change | M4C">
+    <meta name="twitter:description" content="Promoting peace, unity, and constructive dialogue across Kenya.">
+    <meta name="twitter:image" content="https://movementforchange.co.ke{% static 'images/m4c-logo.jpeg' %}">
+    <title>Movement for Change | M4C</title>
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+    <script src="{% static 'js/site.js' %}" defer></script>
+  </head>
+  <body>
+    <header class="site-header" id="siteHeader">
+      <div class="header-inner page-width">
+        <a class="brand" href="#top" aria-label="Movement for Change home">
+          <img src="{% static 'images/m4c-logo.jpeg' %}" alt="Movement for Change logo" width="48" height="48">
+          <span class="brand-copy"><strong>M4C</strong><small>Peace Movement</small></span>
+        </a>
+        <nav class="primary-nav" id="primaryNav" aria-label="Main navigation">
+          <a href="#about">About M4C</a>
+          <a href="#values">Vision &amp; Values</a>
+          <a href="{% url 'leadership' %}">Leadership</a>
+          <a href="{% url 'counties' %}">Counties</a>
+          <a href="{% url 'comrades' %}">Comrades</a>
+          <a href="#involve">Get Involved</a>
+          <a href="#contact">Contact</a>
+          {% if user.is_authenticated %}<a href="{% url 'profile' %}">Profile</a>{% else %}<a href="{% url 'login' %}">Sign in</a>{% endif %}
+        </nav>
+        <div class="header-actions">
+          <a class="button button-small button-blue" href="#involve">Join Now</a>
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-controls="primaryNav" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero section-pad">
+        <img class="hero-background-logo" src="{% static 'images/m4c-logo.jpeg' %}" alt="" aria-hidden="true" width="640" height="640">
+        <div class="hero-inner page-width">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="eyebrow-dot"></span> Kenya's premier peace movement</p>
+            <h1>Promoting Peace, Unity &amp; <em>Constructive Dialogue</em> Across Kenya</h1>
+            <p class="hero-summary">Movement for Change (M4C) is a grassroots civic movement committed to peace, inclusion and democratic participation across Kenya.</p>
+            <div class="hero-actions">
+              <a class="button button-blue" href="#involve">Become a Peace Ambassador <span aria-hidden="true">→</span></a>
+              <a class="button button-outline" href="#about">Learn More</a>
+            </div>
+            <div class="hero-notes" aria-label="Movement highlights">
+              <span>Community-led</span><span>47 counties</span><span>Transparent</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="impact-strip" aria-label="Movement impact">
+        <div class="impact-grid page-width">
+          {% for number, label, icon in stats %}
+            <div class="impact-item"><span class="impact-icon" aria-hidden="true">{{ icon }}</span><strong>{{ number }}</strong><span>{{ label }}</span></div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="about-section section-pad" id="about">
+        <div class="page-width">
+          <div class="section-heading">
+            <p class="eyebrow">About M4C</p>
+            <h2>Our Vision &amp; <em>Mission</em></h2>
+          </div>
+          <div class="about-grid">
+            <article class="about-lead">
+              <p class="eyebrow">Who we are</p>
+              <h3>United for Kenya</h3>
+              <p>A dynamic movement of citizens, youth, women, faith leaders, and community advocates strengthening national cohesion and peaceful participation.</p>
+            </article>
+            <article class="about-block">
+              <p class="eyebrow">Vision</p>
+              <h3>A Peaceful Kenya</h3>
+              <p>A peaceful, united and inclusive Kenya where every person lives with dignity, participates meaningfully in society, and contributes to a just, prosperous and harmonious nation.</p>
+            </article>
+            <article class="about-block about-mission">
+              <p class="eyebrow">Mission</p>
+              <h3>Peace in Action</h3>
+              <p>To promote peace, national unity, and social cohesion through community empowerment, responsible citizenship, and peaceful solutions to societal challenges.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="values-section section-pad" id="values">
+        <div class="page-width">
+          <div class="section-heading">
+            <p class="eyebrow">Core values</p>
+            <h2>The Principles <em>Guiding Our Work</em></h2>
+          </div>
+          <div class="values-grid">
+            {% for title, description, symbol, tone in values %}
+              <article class="value-item">
+                <span class="value-symbol tone-{{ tone }}" aria-hidden="true">{{ symbol }}</span>
+                <h3>{{ title }}</h3>
+                <p>{{ description }}</p>
+              </article>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+
+      <section class="involve-section section-pad" id="involve">
+        {% if user.is_authenticated %}
+          <div class="involve-inner page-width">
+            <div class="involve-copy">
+              <p class="eyebrow">Member access</p>
+              <h2>Welcome back, {{ user.username }}</h2>
+              <p>You are already part of the Movement for Change community.</p>
+            </div>
+            <div class="involve-form-area">
+              <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button class="button button-blue form-submit" type="submit">Sign out</button>
+              </form>
+            </div>
+          </div>
+        {% else %}
+        <div class="involve-inner page-width">
+          <div class="involve-copy">
+            <p class="eyebrow">Get involved</p>
+            <h2>Join the Movement for Peace &amp; Unity</h2>
+            <p>Help mobilize communities, strengthen civic participation, and promote constructive dialogue across Kenya. Become a Peace Ambassador today.</p>
+            <ul class="involve-points">
+              <li><span aria-hidden="true">✓</span> No experience necessary</li>
+              <li><span aria-hidden="true">✓</span> WhatsApp community support</li>
+            </ul>
+          </div>
+          <div class="involve-form-area">
+            <div class="involve-tabs" role="group" aria-label="Join or sign in">
+              <button type="button" aria-pressed="true" aria-controls="joinPanel" data-involve-panel="joinPanel">Join M4C</button>
+              <button type="button" aria-pressed="false" aria-controls="signInPanel" data-involve-panel="signInPanel">Member sign in</button>
+            </div>
+            <div id="joinPanel">
+              <form class="volunteer-form" method="post" action="{% url 'register' %}">
+                {% csrf_token %}
+                <div class="field-group">
+                  <label for="joinFullName">Full name <span>*</span></label>
+                  <input id="joinFullName" name="full_name" type="text" autocomplete="name" required>
+                </div>
+                <div class="field-group">
+                  <label for="joinUsername">Username <span>*</span></label>
+                  <input id="joinUsername" name="username" type="text" autocomplete="username" required>
+                </div>
+                <div class="field-row">
+                  <div class="field-group">
+                    <label for="joinCounty">County <span>*</span></label>
+                    <select id="joinCounty" name="county" required>
+                      <option value="">Select county</option>
+                      {% for county in counties %}<option value="{{ county }}">{{ county }}</option>{% endfor %}
+                    </select>
+                  </div>
+                  <div class="field-group">
+                    <label for="joinInterest">Role <span>*</span></label>
+                    <select id="joinInterest" name="interest" required>
+                      <option value="">Select role</option>
+                      <option>Community Mobilizer</option><option>Youth Leader</option><option>Women Leader</option>
+                      <option>Dialogue Facilitator</option><option>Faith Leader</option><option>General Volunteer</option>
+                      <option>Comrades / Campus Volunteer</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field-group">
+                  <label for="joinEmail">Email <span>*</span></label>
+                  <input id="joinEmail" name="email" type="email" autocomplete="email" required>
+                </div>
+                <div class="field-group">
+                  <label for="joinPhone">Phone (WhatsApp) <span>*</span></label>
+                  <input id="joinPhone" name="phone_number" type="tel" placeholder="+254 712 345 678" autocomplete="tel" required>
+                </div>
+                <div class="field-group">
+                  <label for="joinPassword1">Password <span>*</span></label>
+                  <input id="joinPassword1" name="password1" type="password" autocomplete="new-password" required>
+                </div>
+                <div class="field-group">
+                  <label for="joinPassword2">Confirm password <span>*</span></label>
+                  <input id="joinPassword2" name="password2" type="password" autocomplete="new-password" required>
+                </div>
+                <button class="button button-blue form-submit" type="submit">Join M4C &amp; create account</button>
+              </form>
+            </div>
+            <div id="signInPanel" hidden>
+              <form class="volunteer-form" method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="field-group">
+                  <label for="joinUsername">Username</label>
+                  <input id="joinUsername" name="username" type="text" autocomplete="username" required>
+                </div>
+                <div class="field-group">
+                  <label for="joinPassword">Password</label>
+                  <input id="joinPassword" name="password" type="password" autocomplete="current-password" required>
+                </div>
+                <input type="hidden" name="next" value="/#involve">
+                <button class="button button-blue form-submit" type="submit">Sign in</button>
+                <p class="join-signup-note">New to M4C? <a href="{% url 'register' %}">Create an account</a></p>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div class="footer-grid page-width">
+        <div class="footer-about">
+          <a class="brand" href="#top" aria-label="Movement for Change home">
+            <img src="{% static 'images/m4c-logo.jpeg' %}" alt="" width="42" height="42">
+            <span class="brand-copy"><strong>M4C</strong><small>Peace Movement</small></span>
+          </a>
+          <p>Promoting peace, unity, and constructive dialogue across Kenya through citizen-led action and community empowerment.</p>
+        </div>
+        <div><h3>Quick Links</h3><a href="#about">About M4C</a><a href="#values">Values</a><a href="#involve">Get Involved</a><a href="#contact">Contact Us</a></div>
+        <div><h3>Connect With Us</h3><a href="#contact">WhatsApp Community</a><a href="#contact">Twitter / X</a><a href="#contact">TikTok</a><a href="#contact">Facebook</a></div>
+        <div><h3>Contact</h3><a href="mailto:movementforchange@gmail.com">movementforchange@gmail.com</a><span>Nairobi, Kenya</span></div>
+      </div>
+      <div class="footer-bottom page-width"><span>© 2026 Movement for Change (M4C)</span><span>Peace, unity, participation.</span></div>
+    </footer>
+  </body>
+</html>

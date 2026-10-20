@@ -1,0 +1,96 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>M4C Leadership | Movement for Change</title>
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+    <script src="{% static 'js/site.js' %}" defer></script>
+  </head>
+  <body class="page-shell">
+    <header class="site-header" id="siteHeader">
+      <div class="header-inner page-width">
+        <a class="brand" href="{% url 'home' %}">
+          <img src="{% static 'images/m4c-logo.jpeg' %}" alt="Movement for Change logo" width="48" height="48">
+          <span class="brand-copy"><strong>M4C</strong><small>Peace Movement</small></span>
+        </a>
+        <nav class="primary-nav" id="primaryNav" aria-label="Main navigation">
+          <a href="{% url 'home' %}">Home</a>
+          <a href="{% url 'leadership' %}">Leadership</a>
+          <a href="{% url 'counties' %}">Counties</a>
+          <a href="{% url 'comrades' %}">Comrades</a>
+          {% if user.is_authenticated %}<a href="{% url 'profile' %}">Profile</a>{% else %}<a href="{% url 'login' %}">Sign in</a>{% endif %}
+        </nav>
+        <div class="header-actions">
+          <a class="button button-small button-blue" href="{% url 'home' %}#involve">Join Now</a>
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-controls="primaryNav" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-main page-width section-pad">
+      <section class="page-hero">
+        <p class="eyebrow">Leadership</p>
+        <h1>Organized for <em>peace, unity and service</em></h1>
+        <p>The National Leadership, Regional Leadership and County Leadership structures form a connected movement across Kenya.</p>
+      </section>
+
+      <section class="structure-section">
+        <div class="section-heading section-heading-left">
+          <p class="eyebrow">Leadership profiles</p>
+          <h2>Meet the M4C leaders</h2>
+        </div>
+        <div class="leader-profile-grid">
+          {% for profile in leadership_profiles %}
+            <article class="leader-profile">
+              <img class="leader-profile-photo" src="{% static profile.image %}" alt="{{ profile.name }}" loading="lazy">
+              <div class="leader-profile-copy">
+                {% if profile.name %}<h3>{{ profile.name }}</h3>{% endif %}
+                <p>{{ profile.role }}</p>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="structure-section">
+        <div class="section-heading">
+          <p class="eyebrow">National structure</p>
+          <h2>National Leadership <span>11 members</span></h2>
+        </div>
+        <ol class="role-list">
+          {% for role in national_leadership %}
+            <li><span>{{ forloop.counter }}</span>{{ role }}</li>
+          {% endfor %}
+        </ol>
+      </section>
+
+      <section class="structure-section">
+        <div class="section-heading">
+          <p class="eyebrow">Regional engagement</p>
+          <h2>Regional Leadership <span>11 members per region</span></h2>
+        </div>
+        <ol class="role-list">
+          {% for role in regional_leadership %}
+            <li><span>{{ forloop.counter }}</span>{{ role }}</li>
+          {% endfor %}
+        </ol>
+      </section>
+
+      <section class="structure-section">
+        <div class="section-heading">
+          <p class="eyebrow">County structure</p>
+          <h2>County Leadership <span>11 members per county</span></h2>
+        </div>
+        <ol class="role-list">
+          {% for role in county_leadership %}
+            <li><span>{{ forloop.counter }}</span>{{ role }}</li>
+          {% endfor %}
+        </ol>
+      </section>
+    </main>
+  </body>
+</html>
