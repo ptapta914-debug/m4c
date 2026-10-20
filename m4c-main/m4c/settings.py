@@ -1,15 +1,24 @@
 import os
+import warnings
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = os.environ.get("DJANGO_DEBUG", "false" if os.environ.get("RENDER") else "true").lower() == "true"
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY") or os.environ.get("SECRET_KEY") or os.environ.get("APP_SECRET_KEY")
 if not SECRET_KEY:
-    if not DEBUG:
-        from django.core.exceptions import ImproperlyConfigured
-        raise ImproperlyConfigured("Set DJANGO_SECRET_KEY to a strong, unique secret in production.")
-    SECRET_KEY = "dev-only-insecure-key-do-not-use-in-production"
+    if DEBUG:
+        SECRET_KEY = "dev-only-insecure-key-do-not-use-in-production"
+    else:
+        import secrets
+
+        SECRET_KEY = secrets.token_urlsafe(64)
+        warnings.warn(
+            "DJANGO_SECRET_KEY is not set. Using a generated fallback secret so Django can start. "
+            "Configure DJANGO_SECRET_KEY in production for a stable, secure secret.",
+            UserWarning,
+            stacklevel=2,
+        )
 ALLOWED_HOSTS = [host.strip() for host in os.environ.get(
     "DJANGO_ALLOWED_HOSTS",
     "localhost,127.0.0.1,testserver,movementforchange.co.ke,www.movementforchange.co.ke",
